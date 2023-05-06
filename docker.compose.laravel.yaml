@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+    laravel-alp:
+        build:
+          context: ./Laravel
+          dockerfile: Dockerfile.prd
+        image: laravel-alp
+        container_name: laravel
+        networks:
+          - laranet 
+    
+    nginx:
+      build:
+          context: ./nginx
+          dockerfile: Dockerfile.prd
+      image: nginx-alp
+      container_name: nginx
+      networks:
+        - laranet
+      ports:
+        - "8080:80"
+
+networks:
+  laranet:
+    driver: bridge
