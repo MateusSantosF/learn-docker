@@ -1,0 +1,44 @@
+
+networks:
+   nodework:
+      driver: bridge
+
+services:
+
+    mynode:
+      container_name: mynode
+      build:
+        context: .
+        dockerfile: Dockerfile.node
+      networks:
+        - nodework
+      image: mynode
+      ports: 
+        - "8080:3000"
+      command: ["./wait-for-it.sh", "mydb:3306", "--", "node", "index.js"]
+      depends_on:
+        - mydb
+
+    mydb:
+      container_name: mydb
+      build:
+        context: .
+        dockerfile: Dockerfile.mysql
+      restart: always
+      networks:
+        - nodework
+      image: db
+
+    mynginx:
+      container_name: mynginx
+      build:
+        context: .
+        dockerfile: Dockerfile.nginxx
+      image: mynginx
+      networks:
+        - nodework
+      ports: 
+        - "80:80"
+      depends_on:
+        - mynode
+
