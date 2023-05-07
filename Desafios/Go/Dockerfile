@@ -3,7 +3,7 @@
 FROM golang:latest AS golang
 
 WORKDIR /go/src
-COPY ./go/hello.go /go/src
+COPY ./hello.go /go/src
 RUN  go build hello.go
 ENTRYPOINT ["./hello"]
 
